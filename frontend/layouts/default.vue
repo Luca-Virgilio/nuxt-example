@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>sidebar</div>
+  <div class="flex">
+    <Sidebar />
     <slot />
   </div>
 </template>

@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  modules: ["shadcn-nuxt"],
+  modules: ["shadcn-nuxt", "@nuxt/icon"],
   shadcn: {
     /**
      * Prefix for all the imported component
