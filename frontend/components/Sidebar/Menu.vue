@@ -4,7 +4,7 @@
       class="flex items-center gap-2 p-4 hover:scale[101%] transition cursor-pinter"
     >
       <Logo></Logo>
-      <p class="font-bold">Example app</p>
+      <p class="font-bold text-black">Example app</p>
     </header>
     <div class="px-4 grow">
       <div class="grid gap-2">
