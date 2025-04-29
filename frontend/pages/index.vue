@@ -39,10 +39,13 @@
       </section>
     </main>
     <footer>
-      <div class="flex items-center justify-around gap-4">
-        <div v-for="(item, index) in 3" :key="index">
-          <div class="w-[260px] h-[260px] h-12 bg-neutral-200"></div>
-        </div>
+      <div class="grid lg:grid-cols-3 gap-4">
+        <CardSale
+          v-for="(item, index) in cards"
+          :key="index"
+          :cardDetail="item"
+        >
+        </CardSale>
       </div>
     </footer>
   </div>
@@ -52,17 +55,20 @@
 import { defineAsyncComponent, ref, resolveComponent, onMounted } from "vue";
 import type { Ref } from "vue";
 import type { CategoryType } from "../components/Chart.vue";
-
-const Today = defineAsyncComponent(
-  () => import("../components/Tabs/Today.vue")
-);
+import type { CardDetail } from "../components/CardSale.vue";
 
 const cTab: Ref<CategoryType> = ref("today");
-const tabList = [
-  { name: "Today", value: "today", component: resolveComponent("Today") },
-  { name: "This week", value: "week", component: "<div>This week</div>" },
-  { name: "This month", value: "month", component: "<div>This month</div>" },
-  { name: "This year", value: "year", component: "<div>This year</div>" },
+
+interface TabListType {
+  name: string;
+  value: string;
+}
+
+const tabList: TabListType[] = [
+  { name: "Today", value: "today" },
+  { name: "This week", value: "week" },
+  { name: "This month", value: "month" },
+  { name: "This year", value: "year" },
 ];
 
 const data = ref<number[]>([]);
@@ -108,4 +114,32 @@ const setCategory = () => {
 };
 
 const currentCategory: Ref<CategoryType> = ref("today");
+
+//cards
+const cards: CardDetail[] = [
+  {
+    title: "Total Revenue",
+    progression: 12,
+    description: "Revenue from march 2024",
+    amount: 30000,
+    label: "View sales",
+    icon: "solar:ticket-sale-outline",
+  },
+  {
+    title: "Refunds",
+    progression: 20,
+    description: "refund since the beginning of the year",
+    amount: 1200,
+    label: "View refunds",
+    icon: "heroicons-outline:receipt-refund",
+  },
+  {
+    title: "Payouts",
+    progression: 33,
+    description: "Payouts of this week",
+    amount: 899,
+    label: "View payouts",
+    icon: "tabler:zoom-money",
+  },
+];
 </script>
