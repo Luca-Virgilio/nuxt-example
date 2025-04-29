@@ -9,11 +9,11 @@
     <div class="px-4 grow">
       <div class="grid gap-2">
         <NuxtLink
-          :href="item.path"
+          :to="item.path"
           v-for="(item, index) in menuItems"
           :key="index"
           class="flex items-center gap-2 px-2 py-1 transition hover:bg-neutral-100 rounded cursor-pointer"
-          @click="$router.push(item.path)"
+          @click="handleRouteChange(item.path)"
         >
           <Icon :name="item.icon" size="20"></Icon>
           <span>{{ item.name }}</span>
@@ -24,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits(["changeRoute"]);
+
 //define list of menu items
 const menuItems = [
   { name: "Dashboard", icon: "ri:dashboard-line", path: "/" },
@@ -35,6 +37,12 @@ const menuItems = [
   { name: "Settings", icon: "lucide:settings", path: "/settings" },
   { name: "Profile", icon: "ix:user-profile", path: "/profile" },
 ];
+
+const handleRouteChange = (path: string) => {
+  setTimeout(() => {
+    emit("changeRoute", path);
+  }, 200);
+};
 </script>
 
 <style></style>

@@ -20,14 +20,14 @@
           name="material-symbols:close"
           @click="open = false"
         />
-        <SidebarMenu />
+        <SidebarMenu @changeRoute="open = false" />
       </div>
     </div>
 
     <div
       class="hidden lg:flex w-[250px] h-screen flex flex-col justify-between border-r"
     >
-      <SidebarMenu />
+      <SidebarMenu @changeRoute="open = false" />
     </div>
   </div>
 </template>
