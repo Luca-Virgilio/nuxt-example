@@ -5,7 +5,7 @@
         <p>Hi, welcome back Luca</p>
         <h1>Dashbaord</h1>
       </div>
-      <div class="w-[120px] h-[36px] h-12 bg-neutral-200"></div>
+      <ProductNew></ProductNew>
     </header>
     <main class="grid gap-4">
       <Tabs
