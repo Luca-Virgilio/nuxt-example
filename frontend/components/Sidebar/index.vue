@@ -28,6 +28,9 @@
       class="hidden lg:flex w-[250px] h-screen flex flex-col justify-between border-r"
     >
       <SidebarMenu @changeRoute="open = false" />
+      <div class="mb-4">
+        <UserItem></UserItem>
+      </div>
     </div>
   </div>
 </template>
