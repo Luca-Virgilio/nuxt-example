@@ -4,25 +4,34 @@
   </div>
 </template>
 
-<script setup>
-let props = defineProps(["currentCategory", "data"]);
-let data = props.data || [];
-let currentCategory = props.currentCategory || "Today";
-function generateMonthCategory() {
-  let date = new Date();
-  //get the number of days for this month and update categories
-  let month = date.getMonth();
-  //create day array
-  let daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
-  let monthArray = [];
-  for (let i = 1; i <= daysInMonth; i++) {
-    monthArray.push(i.toString());
-  }
-  //console.log("monthArray", monthArray);
-  categories.value.month = monthArray;
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
+import type {
+  Options as HighchartsOptions,
+  SeriesLineOptions,
+  GradientColorObject,
+} from "highcharts";
+
+export type CategoryType = "today" | "week" | "month" | "year";
+
+interface Categories {
+  today: string[];
+  week: string[];
+  month: string[];
+  year: string[];
 }
-let categories = ref({
-  //every 2h hours
+
+interface ChartProps {
+  currentCategory: CategoryType;
+  data: number[];
+}
+
+const props = withDefaults(defineProps<ChartProps>(), {
+  currentCategory: "today",
+  data: () => [],
+});
+
+const categories = ref<Categories>({
   today: [
     "00:00",
     "02:00",
@@ -54,13 +63,26 @@ let categories = ref({
     "Dec",
   ],
 });
-const chartOption = computed(() => {
+
+function generateMonthCategory() {
+  let date = new Date();
+  //get the number of days for this month and update categories
+  let month = date.getMonth();
+  //create day array
+  let daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
+  let monthArray = [];
+  for (let i = 1; i <= daysInMonth; i++) {
+    monthArray.push(i.toString());
+  }
+  //console.log("monthArray", monthArray);
+  categories.value.month = monthArray;
+}
+
+const chartOption = computed<HighchartsOptions>(() => {
   return {
     chart: {
       type: "line",
-      animation: {
-        enabled: false,
-      },
+      animation: false,
     },
     legend: {},
     title: {
@@ -73,7 +95,7 @@ const chartOption = computed(() => {
     },
     xAxis: {
       gridLineColor: "transparent",
-      categories: categories.value[currentCategory],
+      categories: categories.value[props.currentCategory],
     },
     plotOptions: {
       line: {
@@ -88,10 +110,16 @@ const chartOption = computed(() => {
     },
     series: [
       {
+        type: "line",
         name: "line",
-        lineWidth: "4px",
+        lineWidth: 4,
         color: {
-          linearGradient: {},
+          linearGradient: {
+            x1: 0,
+            x2: 1,
+            y1: 0,
+            y2: 0,
+          },
           stops: [
             [0, "rgba(252,176,69,1)"],
             [0.33, "rgba(253,29,29,1)"],
@@ -99,7 +127,7 @@ const chartOption = computed(() => {
             [1, "green"],
           ],
         },
-        data: data,
+        data: props.data,
       },
     ],
     responsive: {
@@ -110,9 +138,9 @@ const chartOption = computed(() => {
           },
           chartOptions: {
             legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom",
+              layout: "horizontal" as const,
+              align: "center" as const,
+              verticalAlign: "bottom" as const,
             },
           },
         },

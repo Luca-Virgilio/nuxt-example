@@ -49,13 +49,15 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, ref, resolveComponent, onMounted } from "vue";
+import type { Ref } from "vue";
+import type { CategoryType } from "../components/Chart.vue";
 
 const Today = defineAsyncComponent(
   () => import("../components/Tabs/Today.vue")
 );
 
-let cTab = ref("today");
+const cTab: Ref<CategoryType> = ref("today");
 const tabList = [
   { name: "Today", value: "today", component: resolveComponent("Today") },
   { name: "This week", value: "week", component: "<div>This week</div>" },
@@ -63,7 +65,7 @@ const tabList = [
   { name: "This year", value: "year", component: "<div>This year</div>" },
 ];
 
-let data: number[] = ref([]);
+const data = ref<number[]>([]);
 function generateRandomData(number = 10) {
   let generateRandomData: number[] = [];
   for (let i = 0; i < number; i++) {
@@ -71,8 +73,8 @@ function generateRandomData(number = 10) {
   }
 
   //console.log("generateRandomData", generateRandomData);
-  data.value = [...generateRandomData];
-  return data;
+  data.value = generateRandomData;
+  return generateRandomData;
 }
 
 onMounted(() => {
@@ -105,5 +107,5 @@ const setCategory = () => {
   currentCategory.value = value;
 };
 
-let currentCategory = ref("today");
+const currentCategory: Ref<CategoryType> = ref("today");
 </script>
